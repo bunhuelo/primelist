@@ -9,18 +9,6 @@ section .data
     STDOUT      equ  1                      ; const int STDOUT
     
 section .text
-    ; (%r10=number)
-    ; This function sets %r10 to 0 if the number in %r10 is even or to -1 otherwise.
-    isOdd:
-        test r10, 1                         ; test if bit 1 is set
-        jz .lastbitzero                     ; if it's not, go to .lastbitzero
-        or r10, 0xffffffffffffffff          ; if yes, set return value to -1
-        jmp .leavefunction                  ; and return
-        .lastbitzero:                       ; bit 1 is set: even number
-        xor r10, r10                        ; return 0
-        .leavefunction:
-    ret
-
     ; (%rax=number)
     ; This function sets %rax to 0 if the number in %rax is prime or to -1 otherwise. Works for numbers greater than 3. (No exception handling!)
     ; Don't use this function for even numbers. 2 as a divisor won't be tested.
@@ -34,7 +22,7 @@ section .text
         mov rcx, rax                        ; store the number also in %rcx, but
         shr rcx, 1                          ; divide %rcx by 2
         mov r10, rcx                        ; copy %rcx to %r10
-        call isOdd                          ; test if value in %rcx odd or even
+        and r10, 0x1                        ; test if value in %rcx odd or even (bit 0 set?)
         test r10, r10                       ; if odd, ...
         jnz .divide                         ; start testing for primeness, otherwise...
         inc rcx                             ; increment %rcx

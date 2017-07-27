@@ -4,7 +4,7 @@ unsigned long primecache[100000];
 unsigned long primesfound;
 
 /* returns 1 if number is odd and 0 if not */
-unsigned int isOdd(unsigned long number)
+inline unsigned int isOdd(unsigned long number)
 {
     if(number%2) return 1;
     return 0;
